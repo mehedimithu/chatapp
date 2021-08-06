@@ -1,14 +1,15 @@
-import 'package:chatapp/screens/signup.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+import 'login_screen.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   late String _email;
   late String _password;
@@ -20,33 +21,28 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.only(top: 5),
-        child: Column(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Image(
-                    image: AssetImage('assets/images/img1.jpg'),
-                    width: size.width,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Login',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 12),
-                  _buildEmailInput(),
-                  _buildPasswordInput(),
-                  _buildLoginButton(),
-                  _buildSignupBtn(),
-                ],
+        margin: EdgeInsets.only(top: 60),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/images/img2.png'),
+                radius: 50,
               ),
-            )
-          ],
+              SizedBox(height: 5),
+              Text(
+                'Registration',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 18),
+              _buildEmailInput(),
+              _buildPasswordInput(),
+              _buildLoginButton(),
+              SizedBox(height: 18),
+              _buildCancelButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -105,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           color: Colors.blue,
           child: Text(
-            'Login',
+            'Signup',
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {},
@@ -114,21 +110,26 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSignupBtn() {
-    return FlatButton(
-        minWidth: MediaQuery.of(context).size.width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Don\'t have an account?\t Signup',
-              style: TextStyle(color: Colors.amber, fontSize: 13),
-            ),
-          ],
+  Widget _buildCancelButton() {
+    return SizedBox(
+      height: 45,
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
+        child: RaisedButton(
+          elevation: 5.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          color: Colors.red,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+          },
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignupScreen()));
-        });
+      ),
+    );
   }
 }
