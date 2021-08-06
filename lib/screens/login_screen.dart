@@ -1,4 +1,5 @@
 import 'package:chatapp/screens/signup.dart';
+import 'package:chatapp/services/methods.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,52 +11,66 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailCnt = TextEditingController();
+  final TextEditingController _passwordCnt = TextEditingController();
+
   late String _email;
   late String _password;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.only(top: 5),
-        child: Column(
-          children: [
-            Form(
-              key: _formKey,
+      body: isLoading
+          ? Center(
+              child: Container(
+                  height: size.height / 20,
+                  width: size.width / 20,
+                  child: CircularProgressIndicator()),
+            )
+          : Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 5),
               child: Column(
                 children: [
-                  Image(
-                    image: AssetImage('assets/images/img1.jpg'),
-                    width: size.width,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Login',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 12),
-                  _buildEmailInput(),
-                  _buildPasswordInput(),
-                  _buildLoginButton(),
-                  _buildSignupBtn(),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Image(
+                          image: AssetImage('assets/images/img1.jpg'),
+                          width: size.width,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Login',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 12),
+                        _buildEmailInput(_emailCnt),
+                        _buildPasswordInput(_passwordCnt),
+                        SizedBox(height: 5),
+                        _buildLoginButton(),
+                        _buildSignupBtn(),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 
-  Widget _buildEmailInput() {
+  Widget _buildEmailInput(TextEditingController _emailCnt) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextFormField(
+        controller: _emailCnt,
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
@@ -66,16 +81,17 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.grey,
           ),
         ),
-        validator: (value) => value!.isEmpty ? 'Email can\'t be empty' : null,
-        onSaved: (value) => _email = value!.trim(),
+        // validator: (value) => value!.isEmpty ? 'Email can\'t be empty' : null,
+        // onSaved: (value) => _email = value!.trim(),
       ),
     );
   }
 
-  Widget _buildPasswordInput() {
+  Widget _buildPasswordInput(TextEditingController _passwordCnt) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextFormField(
+        controller: _passwordCnt,
         maxLines: 1,
         obscureText: true,
         autofocus: false,
@@ -86,9 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.grey,
           ),
         ),
-        validator: (value) =>
-            value!.isEmpty ? 'Password can\'t be empty' : null,
-        onSaved: (value) => _password = value!.trim(),
+        // validator: (value) =>
+        //     value!.isEmpty ? 'Password can\'t be empty' : null,
+        // onSaved: (value) => _password = value!.trim(),
       ),
     );
   }
@@ -108,7 +124,28 @@ class _LoginScreenState extends State<LoginScreen> {
             'Login',
             style: TextStyle(color: Colors.white),
           ),
-          onPressed: () {},
+          onPressed: () {
+            if (_emailCnt.text.isEmpty && _passwordCnt.text.isEmpty) {
+              setState(() {
+                isLoading = true;
+              });
+              logIn(_emailCnt.text, _passwordCnt.text).then((user) {
+                if (user != null) {
+                  print("Login successful");
+                  setState(() {
+                    isLoading = false;
+                  });
+                } else {
+                  print("Login failed");
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
+              });
+            } else {
+              print("Please entry the correct username and password.");
+            }
+          },
         ),
       ),
     );
