@@ -1,6 +1,7 @@
 import 'package:chatapp/screens/signup.dart';
-import 'package:chatapp/services/methods.dart';
+import 'package:chatapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,53 +17,45 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late String _email;
   late String _password;
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
-      body: isLoading
-          ? Center(
-              child: Container(
-                  height: size.height / 20,
-                  width: size.width / 20,
-                  child: CircularProgressIndicator()),
-            )
-          : Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 5),
+      body: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(top: 5),
+        child: Column(
+          children: [
+            Form(
+              key: _formKey,
               child: Column(
                 children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Image(
-                          image: AssetImage('assets/images/img1.jpg'),
-                          width: size.width,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Login',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 12),
-                        _buildEmailInput(_emailCnt),
-                        _buildPasswordInput(_passwordCnt),
-                        SizedBox(height: 5),
-                        _buildLoginButton(),
-                        _buildSignupBtn(),
-                      ],
-                    ),
-                  )
+                  Image(
+                    image: AssetImage('assets/images/img1.jpg'),
+                    width: size.width,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Login',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 12),
+                  _buildEmailInput(_emailCnt),
+                  _buildPasswordInput(_passwordCnt),
+                  SizedBox(height: 5),
+                  _buildLoginButton(authService),
+                  _buildSignupBtn(),
                 ],
               ),
-            ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -109,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildLoginButton(authService) {
     return SizedBox(
       height: 45,
       width: MediaQuery.of(context).size.width,
@@ -125,26 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            if (_emailCnt.text.isEmpty && _passwordCnt.text.isEmpty) {
-              setState(() {
-                isLoading = true;
-              });
-              logIn(_emailCnt.text, _passwordCnt.text).then((user) {
-                if (user != null) {
-                  print("Login successful");
-                  setState(() {
-                    isLoading = false;
-                  });
-                } else {
-                  print("Login failed");
-                  setState(() {
-                    isLoading = false;
-                  });
-                }
-              });
-            } else {
-              print("Please entry the correct username and password.");
-            }
+            authService.signInWithEmailAndPassword(
+                _emailCnt.text, _passwordCnt.text);
+            // Navigator.pushNamed(context, '/home');
           },
         ),
       ),

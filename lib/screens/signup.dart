@@ -1,5 +1,6 @@
-import 'package:chatapp/services/methods.dart';
+import 'package:chatapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -23,44 +24,36 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
-      body: isLoding
-          ? Center(
-              child: Container(
-                height: size.height / 20,
-                width: size.width / 20,
-                child: CircularProgressIndicator(),
+      body: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(top: 30),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/images/img2.png'),
+                radius: 50,
               ),
-            )
-          : Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 30),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/img2.png'),
-                      radius: 50,
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Registration',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 13),
-                    _buildNameInput(_nameCnt),
-                    _buildEmailInput(_emailCnt),
-                    _buildPasswordInput(_passwordCnt),
-                    SizedBox(height: 10),
-                    _buildSignupButton(),
-                    SizedBox(height: 10),
-                    _buildCancelButton(),
-                  ],
-                ),
+              SizedBox(height: 5),
+              Text(
+                'Registration',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-            ),
+              SizedBox(height: 13),
+              _buildNameInput(_nameCnt),
+              _buildEmailInput(_emailCnt),
+              _buildPasswordInput(_passwordCnt),
+              SizedBox(height: 10),
+              _buildSignupButton(authService),
+              SizedBox(height: 10),
+              _buildCancelButton(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -128,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  Widget _buildSignupButton() {
+  Widget _buildSignupButton(authService) {
     return SizedBox(
       height: 45,
       width: MediaQuery.of(context).size.width,
@@ -143,28 +136,10 @@ class _SignupScreenState extends State<SignupScreen> {
             'Signup',
             style: TextStyle(color: Colors.white),
           ),
-          onPressed: () {
-            if (_nameCnt.text.isEmpty &&
-                _emailCnt.text.isEmpty &&
-                _passwordCnt.text.isEmpty) {
-              setState(() {
-                isLoding = true;
-              });
-
-              createAccount(_nameCnt.text, _emailCnt.text, _passwordCnt.text)
-                  .then((user) {
-                if (user != null) {
-                  setState(() {
-                    isLoding = false;
-                  });
-                  print('Registration successful');
-                } else {
-                  print("Registration failed");
-                }
-              });
-            } else {
-              print("Failed");
-            }
+          onPressed: () async {
+            await authService.createUserWithEmailAndPassword(
+                _emailCnt.text, _passwordCnt.text);
+            Navigator.pushNamed(context, '/login');
           },
         ),
       ),

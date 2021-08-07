@@ -1,10 +1,15 @@
+import 'package:chatapp/screens/home.dart';
 import 'package:chatapp/screens/login_screen.dart';
+import 'package:chatapp/screens/signup.dart';
+import 'package:chatapp/services/auth_service.dart';
+import 'package:chatapp/services/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-Future main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -13,9 +18,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+    return MultiProvider(
+      providers: [
+        Provider<AuthService>(
+          create: (_) => AuthService(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Wrapper(),
+          '/login': (context) => LoginScreen(),
+          '/signup': (context) => SignupScreen(),
+          '/home': (context)=> HomeScreen(),
+        },
+      ),
     );
   }
 }
