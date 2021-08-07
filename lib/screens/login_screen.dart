@@ -125,11 +125,11 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () {
             authService.signInWithEmailAndPassword(
                 _emailCnt.text, _passwordCnt.text);
-            if (_formKey.currentState!.validate()) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Processing Data")),
-              );
-            }
+            // if (_formKey.currentState!.validate()) {
+            //   ScaffoldMessenger.of(context).showSnackBar(
+            //     const SnackBar(content: Text("Processing Data")),
+            //   );
+            // }
           },
         ),
       ),
