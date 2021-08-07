@@ -158,8 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           color: Colors.red,
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginScreen()));
+            Navigator.pushNamed(context, '/login');
           },
           child: Text(
             'Cancel',

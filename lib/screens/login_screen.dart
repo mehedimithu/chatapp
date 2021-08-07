@@ -39,12 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 200,
                     fit: BoxFit.cover,
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 8),
                   Text(
                     'Login',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 12),
+                  SizedBox(height: 10),
                   _buildEmailInput(_emailCnt),
                   _buildPasswordInput(_passwordCnt),
                   SizedBox(height: 5),
@@ -63,20 +63,23 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextFormField(
-        controller: _emailCnt,
-        maxLines: 1,
-        keyboardType: TextInputType.emailAddress,
-        autofocus: false,
-        decoration: InputDecoration(
-          hintText: "Email",
-          icon: Icon(
-            Icons.mail,
-            color: Colors.grey,
+          controller: _emailCnt,
+          maxLines: 1,
+          keyboardType: TextInputType.emailAddress,
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: "Email",
+            icon: Icon(
+              Icons.mail,
+              color: Colors.grey,
+            ),
           ),
-        ),
-        // validator: (value) => value!.isEmpty ? 'Email can\'t be empty' : null,
-        // onSaved: (value) => _email = value!.trim(),
-      ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Email address can\'t be empty';
+            }
+            return null;
+          }),
     );
   }
 
@@ -84,21 +87,23 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextFormField(
-        controller: _passwordCnt,
-        maxLines: 1,
-        obscureText: true,
-        autofocus: false,
-        decoration: InputDecoration(
-          hintText: "Password",
-          icon: Icon(
-            Icons.lock,
-            color: Colors.grey,
+          controller: _passwordCnt,
+          maxLines: 1,
+          obscureText: true,
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: "Password",
+            icon: Icon(
+              Icons.lock,
+              color: Colors.grey,
+            ),
           ),
-        ),
-        // validator: (value) =>
-        //     value!.isEmpty ? 'Password can\'t be empty' : null,
-        // onSaved: (value) => _password = value!.trim(),
-      ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Password can\'t be empty';
+            }
+            return null;
+          }),
     );
   }
 
@@ -120,7 +125,11 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () {
             authService.signInWithEmailAndPassword(
                 _emailCnt.text, _passwordCnt.text);
-            // Navigator.pushNamed(context, '/home');
+            if (_formKey.currentState!.validate()) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Processing Data")),
+              );
+            }
           },
         ),
       ),
@@ -134,14 +143,17 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Don\'t have an account?\t Signup',
+              'Don\'t have an account?\t',
+              style: TextStyle(color: Colors.black, fontSize: 13),
+            ),
+            Text(
+              'Signup',
               style: TextStyle(color: Colors.amber, fontSize: 13),
             ),
           ],
         ),
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignupScreen()));
+          Navigator.pushNamed(context, '/signup');
         });
   }
 }
