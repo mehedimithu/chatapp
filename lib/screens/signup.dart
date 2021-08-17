@@ -1,7 +1,7 @@
 import 'package:chatapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -15,16 +15,12 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _nameCnt = TextEditingController();
   final TextEditingController _emailCnt = TextEditingController();
   final TextEditingController _passwordCnt = TextEditingController();
-  late String _name;
-  late String _email;
-  late String _password;
-
-  bool isLoding = false;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final authService = Provider.of<AuthService>(context);
+
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -49,7 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(height: 10),
               _buildSignupButton(authService),
               SizedBox(height: 10),
-              _buildCancelButton(),
+              textButton(),
             ],
           ),
         ),
@@ -66,11 +62,20 @@ class _SignupScreenState extends State<SignupScreen> {
         keyboardType: TextInputType.name,
         autofocus: false,
         decoration: InputDecoration(
-          hintText: "Name",
-          icon: Icon(
-            Icons.person,
-            color: Colors.grey,
+          filled: true,
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          prefixIcon: IconButton(
+            icon: Icon(
+              Icons.person,
+              color: Color(0xff2162AF),
+            ),
+            onPressed: () {},
           ),
+          hintText: "Enter name",
         ),
         // validator: (value) => value!.isEmpty ? 'Name can\'t be empty' : null,
         // onSaved: (value) => _name = value!.trim(),
@@ -87,11 +92,20 @@ class _SignupScreenState extends State<SignupScreen> {
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: InputDecoration(
-          hintText: "Email",
-          icon: Icon(
-            Icons.mail,
-            color: Colors.grey,
+          filled: true,
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          prefixIcon: IconButton(
+            icon: Icon(
+              Icons.mail,
+              color: Color(0xff2162AF),
+            ),
+            onPressed: () {},
           ),
+          hintText: "Email",
         ),
         // validator: (value) => value!.isEmpty ? 'Email can\'t be empty' : null,
         // onSaved: (value) => _email = value!.trim(),
@@ -108,11 +122,20 @@ class _SignupScreenState extends State<SignupScreen> {
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
-          hintText: "Password",
-          icon: Icon(
-            Icons.lock,
-            color: Colors.grey,
+          filled: true,
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          prefixIcon: IconButton(
+            icon: Icon(
+              Icons.lock,
+              color: Color(0xff2162AF),
+            ),
+            onPressed: () {},
           ),
+          hintText: "Password",
         ),
         // validator: (value) =>
         //     value!.isEmpty ? 'Password can\'t be empty' : null,
@@ -137,35 +160,30 @@ class _SignupScreenState extends State<SignupScreen> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () async {
-            await authService.createUserWithEmailAndPassword(
-                _emailCnt.text, _passwordCnt.text);
-            Navigator.pushNamed(context, '/login');
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            if (_emailCnt.text.isNotEmpty && _passwordCnt.text.isNotEmpty) {
+              await authService.createUserWithEmailAndPassword(
+                  _emailCnt.text, _passwordCnt.text);
+              Navigator.pushNamed(context, '/login');
+
+              pref.setString("email", _emailCnt.text);
+            } else {
+              print("Noted");
+            }
           },
         ),
       ),
     );
   }
+}
 
-  Widget _buildCancelButton() {
-    return SizedBox(
-      height: 45,
-      width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: RaisedButton(
-          elevation: 5.0,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          color: Colors.red,
-          onPressed: () {
-            Navigator.pushNamed(context, '/login');
-          },
-          child: Text(
-            'Cancel',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
-    );
+class textButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text("Already have an account."));
   }
 }

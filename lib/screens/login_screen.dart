@@ -1,7 +1,7 @@
-import 'package:chatapp/screens/signup.dart';
 import 'package:chatapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,9 +14,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailCnt = TextEditingController();
   final TextEditingController _passwordCnt = TextEditingController();
-
-  late String _email;
-  late String _password;
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +65,20 @@ class _LoginScreenState extends State<LoginScreen> {
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: "Email",
-            icon: Icon(
-              Icons.mail,
-              color: Colors.grey,
+            filled: true,
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            prefixIcon: IconButton(
+              icon: Icon(
+                Icons.mail,
+                color: Color(0xff2162AF),
+              ),
+              onPressed: () {},
             ),
+            hintText: "Email",
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -92,11 +98,20 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: true,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: "Password",
-            icon: Icon(
-              Icons.lock,
-              color: Colors.grey,
+            filled: true,
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            prefixIcon: IconButton(
+              icon: Icon(
+                Icons.lock,
+                color: Color(0xff2162AF),
+              ),
+              onPressed: () {},
             ),
+            hintText: "Password",
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -122,14 +137,23 @@ class _LoginScreenState extends State<LoginScreen> {
             'Login',
             style: TextStyle(color: Colors.white),
           ),
-          onPressed: () {
-            authService.signInWithEmailAndPassword(
-                _emailCnt.text, _passwordCnt.text);
-            // if (_formKey.currentState!.validate()) {
-            //   ScaffoldMessenger.of(context).showSnackBar(
-            //     const SnackBar(content: Text("Processing Data")),
-            //   );
-            // }
+          onPressed: () async {
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            if (_emailCnt.text.isNotEmpty && _passwordCnt.text.isNotEmpty) {
+              authService.signInWithEmailAndPassword(
+                  _emailCnt.text, _passwordCnt.text);
+              pref.setString("email", _emailCnt.text);
+            } else {
+              print("Noted");
+              // showDialog(
+              //     context: context,
+              //     builder: (context) {
+              //       return AlertDialog(
+              //         title: Text("Error!"),
+              //         content: Text("e"),
+              //       );
+              //     });
+            }
           },
         ),
       ),
