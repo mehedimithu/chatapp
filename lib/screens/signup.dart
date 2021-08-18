@@ -22,16 +22,17 @@ class _SignupScreenState extends State<SignupScreen> {
     final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white70,
       body: Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.only(top: 30),
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
                 backgroundImage: AssetImage('assets/images/img2.png'),
-                radius: 50,
+                radius: 60,
               ),
               SizedBox(height: 5),
               Text(
@@ -154,7 +155,7 @@ class _SignupScreenState extends State<SignupScreen> {
           elevation: 5.0,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          color: Colors.blue,
+          color: Colors.redAccent,
           child: Text(
             'Signup',
             style: TextStyle(color: Colors.white),
@@ -168,7 +169,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
               pref.setString("email", _emailCnt.text);
             } else {
-              print("Noted");
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Message"),
+                      content: Text("Fill up all the required fields"),
+                    );
+                  });
             }
           },
         ),

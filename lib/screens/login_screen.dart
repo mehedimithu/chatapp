@@ -1,4 +1,5 @@
 import 'package:chatapp/services/auth_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,36 +22,36 @@ class _LoginScreenState extends State<LoginScreen> {
     final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white70,
       body: Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.only(top: 5),
-        child: Column(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Image(
-                    image: AssetImage('assets/images/img1.jpg'),
-                    width: size.width,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Login',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  _buildEmailInput(_emailCnt),
-                  _buildPasswordInput(_passwordCnt),
-                  SizedBox(height: 5),
-                  _buildLoginButton(authService),
-                  _buildSignupBtn(),
-                ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/images/img3.jpg'),
+                radius: 80,
               ),
-            )
-          ],
+              SizedBox(height: 15),
+              Text(
+                'Login',
+                style: TextStyle(
+                    fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 15),
+              _buildEmailInput(_emailCnt),
+              
+              _buildPasswordInput(_passwordCnt),
+              SizedBox(height: 5),
+              
+              _buildLoginButton(authService),
+              
+              _buildSignupBtn()
+
+            ],
+          ),
         ),
       ),
     );
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
           elevation: 5.0,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          color: Colors.blue,
+          color: Colors.redAccent,
           child: Text(
             'Login',
             style: TextStyle(color: Colors.white),
@@ -144,15 +145,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   _emailCnt.text, _passwordCnt.text);
               pref.setString("email", _emailCnt.text);
             } else {
-              print("Noted");
-              // showDialog(
-              //     context: context,
-              //     builder: (context) {
-              //       return AlertDialog(
-              //         title: Text("Error!"),
-              //         content: Text("e"),
-              //       );
-              //     });
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Message"),
+                      content: Text("Enter valid email and password"),
+                    );
+                  });
             }
           },
         ),
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Text(
               'Signup',
-              style: TextStyle(color: Colors.amber, fontSize: 13),
+              style: TextStyle(color: Colors.blue, fontSize: 13),
             ),
           ],
         ),
