@@ -40,16 +40,36 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(signInWithEmailAndPassword!.email.toString().trim()),
         centerTitle: true,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.line_weight_sharp,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
+        // automaticallyImplyLeading: false,
+        leading: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: IconButton(
+                icon: Icon(
+                  Icons.call,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onPressed: () {
+                  // _scaffoldKey.currentState?.openDrawer();
+                },
+              ),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: IconButton(
+                icon: Icon(
+                  Icons.videocam,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onPressed: () {
+                  // _scaffoldKey.currentState?.openDrawer();
+                },
+              ),
+            ),
+          ],
         ),
         actions: [
           ElevatedButton(

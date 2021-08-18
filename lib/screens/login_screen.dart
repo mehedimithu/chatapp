@@ -22,35 +22,37 @@ class _LoginScreenState extends State<LoginScreen> {
     final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white70,
-      body: Container(
-        alignment: Alignment.center,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/images/img3.jpg'),
-                radius: 80,
-              ),
-              SizedBox(height: 15),
-              Text(
-                'Login',
-                style: TextStyle(
-                    fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 15),
-              _buildEmailInput(_emailCnt),
-              
-              _buildPasswordInput(_passwordCnt),
-              SizedBox(height: 5),
-              
-              _buildLoginButton(authService),
-              
-              _buildSignupBtn()
-
-            ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        reverse: true,
+        child: Container(
+          height: size.height,
+          width: size.width,
+          alignment: Alignment.center,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/img3.jpg'),
+                  radius: 80,
+                ),
+                SizedBox(height: 15),
+                Text(
+                  'Login',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 15),
+                _buildEmailInput(_emailCnt),
+                _buildPasswordInput(_passwordCnt),
+                SizedBox(height: 5),
+                _buildLoginButton(authService),
+                _buildSignupBtn()
+              ],
+            ),
           ),
         ),
       ),

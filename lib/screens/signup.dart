@@ -20,34 +20,38 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final authService = Provider.of<AuthService>(context);
-
     return Scaffold(
       backgroundColor: Colors.white70,
-      body: Container(
-        alignment: Alignment.center,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/images/img2.png'),
-                radius: 60,
-              ),
-              SizedBox(height: 5),
-              Text(
-                'Registration',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 13),
-              _buildNameInput(_nameCnt),
-              _buildEmailInput(_emailCnt),
-              _buildPasswordInput(_passwordCnt),
-              SizedBox(height: 10),
-              _buildSignupButton(authService),
-              SizedBox(height: 10),
-              textButton(),
-            ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          height: size.height,
+          width: size.width,
+          alignment: Alignment.center,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/img2.png'),
+                  radius: 60,
+                ),
+                SizedBox(height: 5),
+                Text(
+                  'Registration',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 13),
+                _buildNameInput(_nameCnt),
+                _buildEmailInput(_emailCnt),
+                _buildPasswordInput(_passwordCnt),
+                SizedBox(height: 10),
+                _buildSignupButton(authService),
+                SizedBox(height: 10),
+                textButton(),
+              ],
+            ),
           ),
         ),
       ),
