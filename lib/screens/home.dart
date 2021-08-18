@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Text(
               "Logout",
-              style: TextStyle(fontSize: 12, color: Colors.white),
+              style: TextStyle(fontSize: 13, color: Colors.white),
             ),
           ),
         ],
@@ -64,15 +64,18 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: 17),
+                  fontSize: 18),
             ),
           ),
 
           //display messages
-          Container(
-              height: 500,
-              child:
-                  SingleChildScrollView(reverse: true, child: ShowMessages())),
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: SingleChildScrollView(reverse: true, child: ShowMessages()),
+            ),
+          ),
 
           Container(
             height: 58,
@@ -89,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 suffixIcon: IconButton(
                   icon: Icon(
                     Icons.send,
-                    color: Colors.green,
+                    color: Colors.redAccent,
                   ),
                   onPressed: () {
                     if (mes.text.isNotEmpty) {
@@ -151,12 +154,13 @@ class ShowMessages extends StatelessWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                          Text(x['messages']),
-                          Text(
-                            x['user'],
-                            style: TextStyle(color: Colors.grey, fontSize: 10),
-                          ),
-                        ]),
+                              Text(x['messages']),
+                              Text(
+                                x['user'],
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                              ),
+                            ]),
                       ),
                     ],
                   ),
