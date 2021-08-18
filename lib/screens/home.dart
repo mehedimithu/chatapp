@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Text(
               "Logout",
-              style: TextStyle(fontSize: 13, color: Colors.white),
+              style: TextStyle(fontSize: 13, color: Colors.white,fontWeight: FontWeight.bold),
             ),
           ),
         ],
