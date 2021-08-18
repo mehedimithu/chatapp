@@ -78,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 58,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
+              textAlign: TextAlign.start,
               controller: mes,
               decoration: InputDecoration(
                 filled: true,
@@ -116,10 +116,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 enabledBorder: InputBorder.none,
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
+                prefixIcon: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.attach_file,
+                    color: Colors.grey,
+                  ),
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     Icons.send,
-                    color: Colors.redAccent,
+                    color: Colors.green,
                   ),
                   onPressed: () {
                     if (mes.text.isNotEmpty) {
@@ -133,7 +140,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   },
                 ),
-                hintText: "Start writing here...",
+                hintText: "Start typing here..",
+                // hintStyle: TextStyle(color: Colors.black),
               ),
             ),
           ),
