@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final storeMessage = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController mes = TextEditingController();
 
   getCurrentUser() {
@@ -35,10 +36,21 @@ class _HomeScreenState extends State<HomeScreen> {
     final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(signInWithEmailAndPassword!.email.toString().trim()),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.line_weight_sharp,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
         actions: [
           ElevatedButton(
             onPressed: () async {
@@ -53,6 +65,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(signInWithEmailAndPassword!.email.toString().trim()),
+            ),
+          ],
+        ),
+      ),
+
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: SingleChildScrollView(reverse: true, child: ShowMessages()),
+              child:
+                  SingleChildScrollView(reverse: true, child: ShowMessages()),
             ),
           ),
 
