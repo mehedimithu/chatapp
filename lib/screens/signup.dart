@@ -21,7 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final size = MediaQuery.of(context).size;
     final authService = Provider.of<AuthService>(context);
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
@@ -166,12 +166,11 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           onPressed: () async {
             SharedPreferences pref = await SharedPreferences.getInstance();
-            if (_emailCnt.text.isNotEmpty && _passwordCnt.text.isNotEmpty) {
-              await authService.createUserWithEmailAndPassword(
-                  _emailCnt.text, _passwordCnt.text);
+            if ( _nameCnt.text.isNotEmpty && _emailCnt.text.isNotEmpty && _passwordCnt.text.isNotEmpty) {
+              await authService.createUserWithEmailAndPassword(_nameCnt.text,
+                   _emailCnt.text, _passwordCnt.text);
               Navigator.pushNamed(context, '/login');
-
-              pref.setString("email", _emailCnt.text);
+              pref.setString("email", _emailCnt.text );
             } else {
               showDialog(
                   context: context,

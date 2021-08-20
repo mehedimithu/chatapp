@@ -22,8 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         reverse: true,

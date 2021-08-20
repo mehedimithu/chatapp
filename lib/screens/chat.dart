@@ -1,21 +1,18 @@
-import 'package:chatapp/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 var signInWithEmailAndPassword = FirebaseAuth.instance.currentUser;
 
-class HomeScreen extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ChatScreenState extends State<ChatScreen> {
   final storeMessage = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController mes = TextEditingController();
 
   getCurrentUser() {
@@ -33,70 +30,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context);
-
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(signInWithEmailAndPassword!.email.toString().trim()),
         centerTitle: true,
-        // automaticallyImplyLeading: false,
-        leading: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: IconButton(
-                icon: Icon(
-                  Icons.call,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                onPressed: () {
-                  // _scaffoldKey.currentState?.openDrawer();
-                },
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: IconButton(
-                icon: Icon(
-                  Icons.videocam,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                onPressed: () {
-                  // _scaffoldKey.currentState?.openDrawer();
-                },
-              ),
-            ),
-          ],
+        leading:  IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
-          ElevatedButton(
-            onPressed: () async {
-              SharedPreferences pref = await SharedPreferences.getInstance();
-              await authService.signOut();
-              pref.remove("email");
-            },
-            child: Text(
-              "Logout",
-              style: TextStyle(fontSize: 13, color: Colors.white,fontWeight: FontWeight.bold),
+          IconButton(
+            icon: Icon(
+              Icons.call,
+              color: Colors.white,
+              size: 20,
             ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.videocam,
+              color: Colors.white,
+              size: 20,
+            ),
+            onPressed: () {},
           ),
         ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(signInWithEmailAndPassword!.email.toString().trim()),
-            ),
-          ],
-        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -201,10 +166,21 @@ class ShowMessages extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
-                          color: signInWithEmailAndPassword!.email == x['user']
-                              ? Colors.lightGreenAccent.withOpacity(0.1)
-                              : Colors.blueAccent.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
+                            color: signInWithEmailAndPassword!.email ==
+                                    x['user']
+                                ? Colors.lightGreenAccent.withOpacity(0.1)
+                                : Colors.blueAccent.withOpacity(0.2),
+                            borderRadius:
+                                signInWithEmailAndPassword!.email == x['user']
+                                    ? BorderRadius.only(
+                                        topLeft: Radius.circular(23),
+                                        topRight: Radius.circular(23),
+                                        bottomLeft: Radius.circular(23))
+                                    : BorderRadius.only(
+                                        topLeft: Radius.circular(23),
+                                        topRight: Radius.circular(23),
+                                        bottomRight: Radius.circular(23)
+                                ),
                         ),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,7 +191,8 @@ class ShowMessages extends StatelessWidget {
                                 style:
                                     TextStyle(color: Colors.grey, fontSize: 10),
                               ),
-                            ]),
+                            ]
+                        ),
                       ),
                     ],
                   ),
