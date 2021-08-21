@@ -95,8 +95,10 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           ),
 
+          SizedBox(height: 10),
+
           Container(
-            height: 58,
+            height: 50,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               textAlign: TextAlign.start,

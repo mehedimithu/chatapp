@@ -37,7 +37,7 @@ class AuthService {
       }
     } catch (e) {
       print(e);
-      return null;
+      // return null;
     }
   }
 
@@ -65,7 +65,7 @@ class AuthService {
       }
     } catch (e) {
       print(e);
-      return null;
+      // return null;
     }
   }
 

@@ -120,15 +120,16 @@ class Chat extends StatelessWidget {
                             return messages(size, map);
                           });
                     } else {
-                      return Container();
+                      return Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
               ),
             ),
           ),
+          SizedBox(height: 10),
           Container(
-            height: 58,
+            height: 50,
             width: size.width,
             child: TextFormField(
               textAlign: TextAlign.start,
@@ -166,11 +167,12 @@ class Chat extends StatelessWidget {
   Widget messages(Size size, Map<String, dynamic> map) {
     return Container(
       width: size.width,
+      // height: size.height,
       alignment: map['sendby'] == _firebaseAuth.currentUser!.displayName
           ? Alignment.centerRight
           : Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
         decoration: BoxDecoration(
           color: map['sendby'] == _firebaseAuth.currentUser!.displayName
@@ -207,5 +209,3 @@ class Chat extends StatelessWidget {
     );
   }
 }
-
-

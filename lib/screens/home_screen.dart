@@ -67,9 +67,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   void onSearch() async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    setState(() {
-      isLoading = true;
-    });
+    // setState(() {
+    //   if (isLoading = true){
+    //     print('User not found');
+    //   }else{
+    //     isLoading = false;
+    //   }
+    // });
 
     await _firestore
         .collection('user')
