@@ -1,5 +1,5 @@
-import 'package:chatapp/screens/char_room.dart';
-import 'package:chatapp/screens/chat.dart';
+import 'package:chatapp/screens/char_screen.dart';
+import 'package:chatapp/screens/chat_room.dart';
 import 'package:chatapp/screens/home_screen.dart';
 import 'package:chatapp/screens/login_screen.dart';
 import 'package:chatapp/screens/signup.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => Wrapper(),
           '/login': (context) => LoginScreen(),
           '/signup': (context) => SignupScreen(),
-          '/home': (context) => ChatScreen(),
+          '/home': (context) => ChatRoom(),
           '/welcome': (context) => HomeScreen(),
         },
       ),

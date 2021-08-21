@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
-import 'char_room.dart';
+import 'char_screen.dart';
 
 var signInWithEmailAndPassword = FirebaseAuth.instance.currentUser;
 
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit Chat!'),
+        title: Text('Chatapp'),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
@@ -128,8 +128,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text(
-                  signInWithEmailAndPassword!.displayName.toString().trim()),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  signInWithEmailAndPassword!.displayName
+                      .toString()
+                      .toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
           ],
         ),
@@ -138,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         onPressed: () {
           Navigator.pushNamed(context, '/home');
         },
-        label: Text('Chat room'),
+        label: Text('Chat room',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
         icon: const Icon(Icons.chat),
         backgroundColor: Colors.redAccent,
       ),
@@ -167,11 +178,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           icon: Icon(
                             Icons.search,
                             color: Color(0xff2162AF),
-                            size: 25,
+                            size: 35,
                           ),
                           onPressed: () {},
                         ),
-                        hintText: "Type here for search",
+                        hintText: "Search by name",
                       ),
                     ),
                   ),
@@ -215,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     userMap!['name']);
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) => ChatRoom(
+                                    builder: (_) => Chat(
                                         chatRoomId: roomId!, userMap: userMap!),
                                   ),
                                 );

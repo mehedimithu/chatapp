@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 var signInWithEmailAndPassword = FirebaseAuth.instance.currentUser;
 
-class ChatScreen extends StatefulWidget {
+class ChatRoom extends StatefulWidget {
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatRoomState createState() => _ChatRoomState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatRoomState extends State<ChatRoom> {
+  Map<String, dynamic>? userMap;
+
   final storeMessage = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   TextEditingController mes = TextEditingController();
@@ -32,9 +33,15 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(signInWithEmailAndPassword!.email.toString().trim()),
+        title: Column(
+          children: [
+            Text(signInWithEmailAndPassword!.displayName.toString().trim()),
+            Text(signInWithEmailAndPassword!.email.toString().trim(),
+                style: TextStyle(color: Colors.white, fontSize: 10)),
+          ],
+        ),
         centerTitle: true,
-        leading:  IconButton(
+        leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
             color: Colors.white,
@@ -142,7 +149,7 @@ class ShowMessages extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("Messages")
-            .orderBy("time")
+            .orderBy("time", descending: false)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -166,33 +173,35 @@ class ShowMessages extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
-                            color: signInWithEmailAndPassword!.email ==
-                                    x['user']
-                                ? Colors.lightGreenAccent.withOpacity(0.1)
-                                : Colors.blueAccent.withOpacity(0.2),
-                            borderRadius:
-                                signInWithEmailAndPassword!.email == x['user']
-                                    ? BorderRadius.only(
-                                        topLeft: Radius.circular(23),
-                                        topRight: Radius.circular(23),
-                                        bottomLeft: Radius.circular(23))
-                                    : BorderRadius.only(
-                                        topLeft: Radius.circular(23),
-                                        topRight: Radius.circular(23),
-                                        bottomRight: Radius.circular(23)
-                                ),
+                          color: signInWithEmailAndPassword!.email == x['user']
+                              ? Colors.lightGreenAccent.withOpacity(0.1)
+                              : Colors.blueAccent.withOpacity(0.2),
+                          borderRadius:
+                              signInWithEmailAndPassword!.email == x['user']
+                                  ? BorderRadius.only(
+                                      topLeft: Radius.circular(23),
+                                      topRight: Radius.circular(23),
+                                      bottomLeft: Radius.circular(23))
+                                  : BorderRadius.only(
+                                      topLeft: Radius.circular(23),
+                                      topRight: Radius.circular(23),
+                                      bottomRight: Radius.circular(23)),
                         ),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(x['messages']),
                               Text(
+                                x['time'].toDate().toString(),
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                              ),
+                              Text(
                                 x['user'],
                                 style:
                                     TextStyle(color: Colors.grey, fontSize: 10),
                               ),
-                            ]
-                        ),
+                            ]),
                       ),
                     ],
                   ),

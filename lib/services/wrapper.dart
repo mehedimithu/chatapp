@@ -1,5 +1,5 @@
 import 'package:chatapp/model/user_model.dart';
-import 'package:chatapp/screens/chat.dart';
+import 'package:chatapp/screens/chat_room.dart';
 import 'package:chatapp/screens/home_screen.dart';
 import 'package:chatapp/screens/login_screen.dart';
 import 'package:chatapp/services/auth_service.dart';

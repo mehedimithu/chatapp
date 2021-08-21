@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 
-class ChatRoom extends StatelessWidget {
-  ChatRoom({required this.chatRoomId, required this.userMap});
+class Chat extends StatelessWidget {
+  Chat({required this.chatRoomId, required this.userMap});
 
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,7 +21,7 @@ class ChatRoom extends StatelessWidget {
           .add({
         "sendby": _firebaseAuth.currentUser!.displayName!.trim(),
         "message": _chat.text.trim(),
-        "time": FieldValue.serverTimestamp(),
+        "time": DateTime.now(),
       });
       _chat.clear();
     } else {
@@ -94,10 +94,11 @@ class ChatRoom extends StatelessWidget {
 
           //display messages
           Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                height: size.height / 1.25,
-                width: size.width,
+            child: Container(
+              height: size.height,
+              width: size.width,
+              child: SingleChildScrollView(
+                reverse: true,
                 child: StreamBuilder<QuerySnapshot>(
                   stream: _firestore
                       .collection('chatroom')
@@ -111,6 +112,7 @@ class ChatRoom extends StatelessWidget {
                       return ListView.builder(
                           shrinkWrap: true,
                           primary: true,
+                          physics: ScrollPhysics(),
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, i) {
                             Map<String, dynamic> map = snapshot.data!.docs[i]
@@ -187,7 +189,7 @@ class ChatRoom extends StatelessWidget {
           // borderRadius: BorderRadius.circular(15),
           // color: Colors.blue,
         ),
-        child: Column(children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             map['message'],
             style: TextStyle(
@@ -196,15 +198,14 @@ class ChatRoom extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          // Text(
-          //   map['sendby'].toString(),
-          //   style:
-          //   TextStyle(color: Colors.grey, fontSize: 16),
-          // ),
-        ]
-        ),
-
+          Text(
+            map['time'].toDate().toString(),
+            style: TextStyle(color: Colors.grey, fontSize: 10),
+          ),
+        ]),
       ),
     );
   }
 }
+
+
