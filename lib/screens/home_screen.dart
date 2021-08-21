@@ -135,9 +135,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  signInWithEmailAndPassword!.displayName
-                      .toString()
-                      .toUpperCase(),
+                    _firebaseAuth.currentUser!.displayName!.toString().toUpperCase(),
                   style: TextStyle(
                       fontSize: 13,
                       color: Colors.white,
