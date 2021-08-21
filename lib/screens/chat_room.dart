@@ -56,7 +56,7 @@ class _ChatRoomState extends State<ChatRoom> {
             icon: Icon(
               Icons.call,
               color: Colors.white,
-              size: 20,
+              size: 25,
             ),
             onPressed: () {},
           ),
@@ -64,7 +64,7 @@ class _ChatRoomState extends State<ChatRoom> {
             icon: Icon(
               Icons.videocam,
               color: Colors.white,
-              size: 20,
+              size: 25,
             ),
             onPressed: () {},
           ),
@@ -120,7 +120,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 suffixIcon: IconButton(
                   icon: Icon(
                     Icons.send,
-                    color: Colors.green,
+                    color: Colors.blue,
                   ),
                   onPressed: () {
                     if (mes.text.isNotEmpty) {

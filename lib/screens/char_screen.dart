@@ -58,12 +58,22 @@ class Chat extends StatelessWidget {
           },
         ),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(
               Icons.call,
               color: Colors.white,
-              size: 20,
+              size: 25,
             ),
             onPressed: () {},
           ),
@@ -71,7 +81,7 @@ class Chat extends StatelessWidget {
             icon: Icon(
               Icons.videocam,
               color: Colors.white,
-              size: 20,
+              size: 25,
             ),
             onPressed: () {},
           ),
@@ -151,7 +161,7 @@ class Chat extends StatelessWidget {
                 suffixIcon: IconButton(
                   icon: Icon(
                     Icons.send,
-                    color: Colors.green,
+                    color: Colors.blue,
                   ),
                   onPressed: onSendMessage,
                 ),
